@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${product.name} + ' - Product Details'">Product Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        .product-image-placeholder {
+            height: 400px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+        }
+        .price-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #28a745;
+        }
+        .detail-card {
+            border-left: 4px solid #667eea;
+        }
+        .quantity-control {
+            width: 80px;
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/products">
+            <i class="bi bi-shop"></i> Store
+        </a>
+        <button class="btn btn-outline-light btn-sm">
+            <i class="bi bi-cart3"></i> Cart
+        </button>
+    </div>
+</nav>
+
+<!-- Breadcrumb -->
+<div class="container mt-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/catalog/welcome">Products</a></li>
+            <li class="breadcrumb-item active" aria-current="page" th:text="${product.name}">Product</li>
+        </ol>
+    </nav>
+</div>
+
+<!-- Product Details -->
+<div class="container my-5">
+    <div class="row">
+        <!-- Product Image -->
+        <div class="col-md-6 mb-4">
+            <div class="product-image-placeholder">
+                <i class="bi bi-box-seam text-white" style="font-size: 8rem;"></i>
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-md-6">
+            <h1 class="display-5 mb-3" th:text="${product.name}">Product Name</h1>
+
+            <div class="mb-3">
+                    <span class="badge bg-primary me-2">
+                        <i class="bi bi-building"></i>
+                        <span th:text="${product.manufacturer}">Manufacturer</span>
+                    </span>
+                <span class="badge bg-secondary">
+                        <i class="bi bi-rulers"></i>
+                        <span th:text="${product.size}">Size</span>
+                    </span>
+            </div>
+
+            <hr>
+
+            <!-- Price -->
+            <div class="price-display mb-4" th:text="'$' + ${product.price}">$0.00</div>
+
+            <!-- Quantity & Add to Cart -->
+            <div class="mb-4">
+                <label class="form-label fw-bold">Quantity:</label>
+                <div class="input-group mb-3" style="max-width: 200px;">
+                    <button class="btn btn-outline-secondary" type="button">
+                        <i class="bi bi-dash"></i>
+                    </button>
+                    <input type="number" class="form-control text-center quantity-control" value="1" min="1">
+                    <button class="btn btn-outline-secondary" type="button">
+                        <i class="bi bi-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary btn-lg">
+                    <i class="bi bi-cart-plus"></i> Add to Cart
+                </button>
+            </div>
+
+            <!-- Availability Status -->
+            <div class="alert alert-success mt-4" role="alert">
+                <i class="bi bi-check-circle-fill"></i> In Stock - Ships within 2-3 business days
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Details Tabs -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#specifications" type="button">
+                        Specifications
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content p-4 border border-top-0">
+                <!-- Specifications Tab -->
+                <div class="tab-pane fade show active" id="specifications" role="tabpanel">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card detail-card mb-3">
+                                <div class="card-body">
+                                    <p class="mb-1"><strong>Product ID:</strong> <span th:text="${product.id}">000</span></p>
+                                    <p class="mb-1"><strong>Manufacturer:</strong> <span th:text="${product.manufacturer}">N/A</span></p>
+                                    <p class="mb-1"><strong>Size:</strong> <span th:text="${product.size}">N/A</span></p>
+                                    <p class="mb-0"><strong>Price:</strong> <span th:text="'$' + ${product.price}">$0.00</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
