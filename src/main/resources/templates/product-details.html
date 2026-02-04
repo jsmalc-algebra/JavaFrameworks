@@ -56,10 +56,16 @@
     <div class="row">
         <!-- Product Image -->
         <div class="col-md-6 mb-4">
-            <div class="product-image-placeholder">
-                <i class="bi bi-box-seam text-white" style="font-size: 8rem;"></i>
+            <div class="d-flex align-items-center justify-content-center rounded"
+                 style="height: 400px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <div class="text-white text-center">
+                    <div style="font-size: 8rem; font-weight: bold;"
+                         th:text="${#strings.substring(product.name, 0, 1)}">P</div>
+                    <h4 th:text="${product.manufacturer}">Manufacturer</h4>
+                </div>
             </div>
         </div>
+
 
         <!-- Product Info -->
         <div class="col-md-6">
