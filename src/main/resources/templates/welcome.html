@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<html lang="en" xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,9 +38,15 @@
             <i class="bi bi-shop"></i> Product Catalog
         </h1>
         <p class="lead">Browse our extensive collection of products</p>
-        <a href="/catalog/newProductScreen" class="btn btn-success w-100">
+        <a href="/catalog/newProductScreen" class="btn btn-success w-100" sec:authorize="hasRole('ROLE_ADMIN')">
             <i class="bi bi-plus-circle"></i> Add Product
         </a>
+        <div style="padding-block: 1%"></div>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn btn-danger btn-lg w-100">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </button>
+        </form>
     </div>
 </div>
 
@@ -85,7 +92,7 @@
                         </div>
                     </a>
                         <!-- Product ID Footer -->
-                        <div class="card-footer d-flex justify-content-between align-items-center">
+                        <div class="card-footer d-flex justify-content-between align-items-center" sec:authorize="hasRole('ROLE_ADMIN')">
                             <small>ID: <span th:text="${product.id}">000</span></small>
                             <div>
                                 <a th:href="@{/catalog/updateScreen(id=${product.id})}" class="text-decoration-none">

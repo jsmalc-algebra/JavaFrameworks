@@ -1,7 +1,7 @@
 package hr.algebra.jsmalc.online_retial_project.service;
 
 import hr.algebra.jsmalc.online_retial_project.domain.Product;
-import hr.algebra.jsmalc.online_retial_project.repository.ProductRepository;
+import hr.algebra.jsmalc.online_retial_project.repository.ProductRepositoryJpa;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,30 +12,31 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductRepository productRepository;
+    private final ProductRepositoryJpa productRepository;
 
     @Override
     public List<Product> findAll() {
-        return productRepository.findAll();
+        return (List<Product>) productRepository.findAll();
     }
 
     @Override
     public void addProduct(Product product) {
-        productRepository.addProduct(product);
+        productRepository.save(product);
     }
 
     @Override
     public Optional<Product> getProduct(Long id) {
-       return productRepository.getProduct(id);
+       return productRepository.findById(id);
     }
 
     @Override
     public void deleteProduct(Long productId) {
-        productRepository.deleteProduct(productId);
+        productRepository.deleteById(productId);
     }
 
     @Override
     public void updateProduct(Product originalProduct, Product updatedProduct) {
-        productRepository.updateProduct(originalProduct, updatedProduct);
+        updatedProduct.setId(originalProduct.getId());
+        productRepository.save(updatedProduct);
     }
 }
