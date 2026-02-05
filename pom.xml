@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>hr.algebra.jsmalc</groupId>
-    <artifactId>Online_retial_PROJECT</artifactId>
+    <artifactId>Online_retail_PROJECT</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Online retial PROJECT</name>
     <description>Online retial PROJECT</description>
