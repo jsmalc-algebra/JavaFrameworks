@@ -1,7 +1,6 @@
-package hr.algebra.jsmalc.online_retial_project.controller;
+package hr.algebra.jsmalc.online_retial_project.controller.mvc;
 
 import hr.algebra.jsmalc.online_retial_project.domain.Product;
-import hr.algebra.jsmalc.online_retial_project.repository.ProductRepository;
 import hr.algebra.jsmalc.online_retial_project.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;

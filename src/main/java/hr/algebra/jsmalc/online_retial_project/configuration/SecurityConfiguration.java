@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +21,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(
                                 "/catalog/update",
@@ -30,9 +32,12 @@ public class SecurityConfiguration {
                         .requestMatchers(
                                 "/catalog/welcome",
                                 "/catalog/details",
-                                "/logout",
-                                "/h2-console/**"
+                                "/logout"
                         ).permitAll()
+                        .requestMatchers(
+                                "/h2console/**",
+                                "/warehouse/rest/**"
+                        ).anonymous()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
