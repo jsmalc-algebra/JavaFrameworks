@@ -26,6 +26,36 @@
         .quantity-control {
             width: 80px;
         }
+        .language-switcher {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .lang-btn {
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            color: #495057;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .lang-btn:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+            color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.2);
+        }
+        .lang-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -33,10 +63,24 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="/products">
-            <i class="bi bi-shop"></i> Store
+            <i class="bi bi-shop"></i>
+            <span th:text="#{universal.store}"></span>
         </a>
+        <div class="language-switcher">
+            <a th:href="@{''(id=${param.id}, lang='en')}"
+               th:classappend="${#locale.language=='en'?'active':''}"
+               class="lang-btn">
+                🇬🇧 English
+            </a>
+            <a th:href="@{''(id=${param.id}, lang='de')}"
+               th:classappend="${#locale.language=='de'?'active':''}"
+               class="lang-btn">
+                🇩🇪 Deutsch
+            </a>
+        </div>
         <button class="btn btn-outline-light btn-sm">
-            <i class="bi bi-cart3"></i> Cart
+            <i class="bi bi-cart3"></i>
+            <span th:text="#{universal.cart}"></span>
         </button>
     </div>
 </nav>
@@ -45,7 +89,7 @@
 <div class="container mt-3">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/catalog/welcome">Products</a></li>
+            <li class="breadcrumb-item"><a href="/catalog/welcome" th:text="#{details.products}"></a></li>
             <li class="breadcrumb-item active" aria-current="page" th:text="${product.name}">Product</li>
         </ol>
     </nav>
@@ -85,32 +129,22 @@
             <hr>
 
             <!-- Price -->
-            <div class="price-display mb-4" th:text="'$' + ${product.price}">$0.00</div>
+            <div class="price-display mb-4" th:text="'€' + ${product.price}">€0.00</div>
 
             <!-- Quantity & Add to Cart -->
             <div class="mb-4">
-                <label class="form-label fw-bold">Quantity:</label>
+                <label class="form-label fw-bold" th:text="#{details.quantity}"></label>
                 <div class="input-group mb-3" style="max-width: 200px;">
-                    <button class="btn btn-outline-secondary" type="button">
-                        <i class="bi bi-dash"></i>
-                    </button>
                     <input type="number" class="form-control text-center quantity-control" value="1" min="1">
-                    <button class="btn btn-outline-secondary" type="button">
-                        <i class="bi bi-plus"></i>
-                    </button>
                 </div>
             </div>
 
             <!-- Action Buttons -->
             <div class="d-grid gap-2">
                 <button class="btn btn-primary btn-lg">
-                    <i class="bi bi-cart-plus"></i> Add to Cart
+                    <i class="bi bi-cart-plus"></i>
+                    <span th:text="#{universal.addToCart}"></span>
                 </button>
-            </div>
-
-            <!-- Availability Status -->
-            <div class="alert alert-success mt-4" role="alert">
-                <i class="bi bi-check-circle-fill"></i> In Stock - Ships within 2-3 business days
             </div>
         </div>
     </div>
@@ -120,8 +154,8 @@
         <div class="col-12">
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#specifications" type="button">
-                        Specifications
+                    <button class="nav-link active" data-bs-toggle="tab"
+                            data-bs-target="#specifications" type="button" th:text="#{details.specifications}">
                     </button>
                 </li>
             </ul>
@@ -133,10 +167,9 @@
                         <div class="col-md-6">
                             <div class="card detail-card mb-3">
                                 <div class="card-body">
-                                    <p class="mb-1"><strong>Product ID:</strong> <span th:text="${product.id}">000</span></p>
-                                    <p class="mb-1"><strong>Manufacturer:</strong> <span th:text="${product.manufacturer}">N/A</span></p>
-                                    <p class="mb-1"><strong>Size:</strong> <span th:text="${product.size}">N/A</span></p>
-                                    <p class="mb-0"><strong>Price:</strong> <span th:text="'$' + ${product.price}">$0.00</span></p>
+                                    <p class="mb-1"><strong th:text="#{details.manuf}"></strong> <span th:text="${product.manufacturer}">N/A</span></p>
+                                    <p class="mb-1"><strong th:text="#{details.size}"></strong> <span th:text="${product.size}">N/A</span></p>
+                                    <p class="mb-0"><strong th:text="#{details.price}"></strong> <span th:text="'€' + ${product.price}">€0.00</span></p>
                                 </div>
                             </div>
                         </div>

@@ -32,8 +32,8 @@ public class SecurityConfiguration {
                                 "/catalog/deleteProduct"
                         ).hasRole("ADMIN")
                         .requestMatchers(
-                                "/catalog/welcome",
-                                "/catalog/details",
+                                "/catalog/welcome**",
+                                "/catalog/details**",
                                 "/logout",
                                 "/auth/api/v1/logout",
                                 "/auth/api/v1/refreshToken"

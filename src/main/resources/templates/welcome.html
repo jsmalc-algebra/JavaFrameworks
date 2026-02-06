@@ -28,23 +28,78 @@
             padding: 3rem 0;
             margin-bottom: 2rem;
         }
+        .language-switcher {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .lang-btn {
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            color: #495057;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .lang-btn:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+            color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.2);
+        }
+        .lang-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
     </style>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <i class="bi bi-shop-window"></i>
+        <span class="navbar-brand mb-0 h5" th:text="#{universal.store}"></span>
+        <div class="language-switcher">
+            <a th:href="@{?lang=en}"
+               th:classappend="${#locale.language=='en'?'active':''}"
+               class="lang-btn">
+                🇬🇧 English
+            </a>
+            <a th:href="@{?lang=de}"
+               th:classappend="${#locale.language=='de'?'active':''}"
+               class="lang-btn">
+                🇩🇪 Deutsch
+            </a>
+        </div>
+        <button class="btn btn-outline-light btn-sm">
+            <i class="bi bi-cart3"></i>
+            <span th:text="#{universal.cart}"></span>
+        </button>
+    </div>
+</nav>
 <!-- Hero Section -->
 <div class="hero-section">
     <div class="container">
         <h1 class="display-4 mb-3">
-            <i class="bi bi-shop"></i> Product Catalog
+            <i class="bi bi-shop"></i>
+            <span th:text="#{welcome.title}"></span>
         </h1>
-        <p class="lead">Browse our extensive collection of products</p>
+        <p class="lead" th:text="#{welcome.pitch}"></p>
         <a href="/catalog/newProductScreen" class="btn btn-success w-100" sec:authorize="hasRole('ROLE_ADMIN')">
-            <i class="bi bi-plus-circle"></i> Add Product
+            <i class="bi bi-plus-circle"></i>
+            <span th:text="#{welcome.add}"></span>
         </a>
         <div style="padding-block: 1%"></div>
         <form th:action="@{/logout}" method="post">
             <button type="submit" class="btn btn-danger btn-lg w-100">
-                <i class="bi bi-box-arrow-right"></i> Logout
+                <i class="bi bi-box-arrow-right"></i>
+                <span th:text="#{welcome.logout}"></span>
             </button>
         </form>
     </div>
@@ -86,7 +141,8 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="price-tag" th:text="${product.price} + '€'">0.00€</span>
                                 <button class="btn btn-primary">
-                                    <i class="bi bi-cart-plus"></i> Add to Cart
+                                    <i class="bi bi-cart-plus"></i>
+                                    <span th:text="#{universal.addToCart}"></span>
                                 </button>
                             </div>
                         </div>
