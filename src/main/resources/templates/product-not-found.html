@@ -103,12 +103,12 @@
         <i class="bi bi-shop-window"></i>
         <span class="navbar-brand mb-0 h5" th:text="#{universal.store}"></span>
         <div class="language-switcher">
-            <a th:href="@{?lang=en}"
+            <a th:href="@{''(id=${param.id}, lang='en')}"
                th:classappend="${#locale.language=='en'?'active':''}"
                class="lang-btn">
                 🇬🇧 English
             </a>
-            <a th:href="@{?lang=de}"
+            <a th:href="@{''(id=${param.id}, lang='de')}"
                th:classappend="${#locale.language=='de'?'active':''}"
                class="lang-btn">
                 🇩🇪 Deutsch
@@ -139,12 +139,12 @@
                 <i class="bi bi-box-seam not-found-icon"></i>
 
                 <div class="error-code">404</div>
-                <h2 class="fw-bold mt-2 mb-1" th:text="${notFound}">Product Not Found</h2>
-                <p class="text-muted mb-4">
+                <h2 class="fw-bold mt-2 mb-1" th:text="#{notFound.title}">Product Not Found</h2>
+                <p class="text-muted mb-4" th:text="#{notFound.explanation}">
                     The product you're looking for doesn't exist or may have been removed from the catalog.
                 </p>
 
-                <a href="/catalog" class="home-btn">
+                <a href="/catalog/welcome" class="home-btn" th:text="#{notFound.return}">
                     <i class="bi bi-house-door-fill"></i>
                     Back to Catalog
                 </a>
