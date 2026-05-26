@@ -27,14 +27,16 @@ public class WelcomeScreenController {
     @GetMapping("details")
     public String showProductDetails(Model model, @RequestParam Long id) {
         Optional<Product> productOptional = productService.getProduct(id);
-        productOptional.ifPresent(model::addAttribute);
+        if (productOptional.isEmpty()) {return "product-not-found";}
+        model.addAttribute("product", productOptional.get());
         return "product-details";
     }
 
     @GetMapping("updateScreen")
     public String showProductUpdateScreen(Model model, @RequestParam Long id) {
         Optional<Product> productOptional = productService.getProduct(id);
-        productOptional.ifPresent(model::addAttribute);
+        if (productOptional.isEmpty()) {return "product-not-found";}
+        model.addAttribute("product", productOptional.get());
         return "product-edit";
     }
 
