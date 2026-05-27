@@ -35,9 +35,13 @@ public class ProductCrudControllerIntegrationTest {
 
     @Test
     @DisplayName("POST /catalog/newProductScreen - should redirect the user to the page with the list of all products" +
-            "after sucessful creation of a product")
+            "after successful creation of a product")
     void createNewProduct_ShouldRedirectToWelcomeScreen() throws Exception {
-        mockMvc.perform(post("/catalog/newProductScreen"))
+        mockMvc.perform(post("/catalog/newProductScreen")
+                        .param("name","Strawberry Jam")
+                        .param("description","Tests of the Editland")
+                        .param("size","1kg")
+                        .param("price","123.45"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/catalog/welcome"));
     }
