@@ -10,10 +10,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest(ProductCrudController.class)
 @org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
@@ -34,12 +32,12 @@ public class ProductCrudControllerIntegrationTest {
 
 
     @Test
-    @DisplayName("POST /catalog/newProductScreen - should redirect the user to the page with the list of all products" +
+    @DisplayName("POST /catalog/create - should redirect the user to the page with the list of all products" +
             "after successful creation of a product")
     void createNewProduct_ShouldRedirectToWelcomeScreen() throws Exception {
-        mockMvc.perform(post("/catalog/newProductScreen")
+        mockMvc.perform(post("/catalog/create")
                         .param("name","Strawberry Jam")
-                        .param("description","Tests of the Editland")
+                        .param("description","Tests of the Homeland")
                         .param("size","1kg")
                         .param("price","123.45"))
                 .andExpect(status().is3xxRedirection())

@@ -208,5 +208,14 @@ class WelcomeScreenControllerIntegrationTest {
         verify(productService, times(1)).updateProduct(eq(product1), any());
     }
 
+    @Test
+    @DisplayName("POST /catalog/deleteProduct - should delete event and redirect")
+    void showDeleteProductScreen_ShouldRedirectToWelcomeScreen() throws Exception {
+        mockMvc.perform(post("/catalog/deleteProduct")
+                    .param("id","1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/catalog/welcome"));
+    }
+
 
 }

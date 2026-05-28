@@ -11,11 +11,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/warehouse/rest")
-public class EventRestCrudController {
+public class ProductRestCrudController {
 
     private final ProductService productService;
 
-    public EventRestCrudController(ProductService productService) {
+    public ProductRestCrudController(ProductService productService) {
         this.productService = productService;
     }
 
