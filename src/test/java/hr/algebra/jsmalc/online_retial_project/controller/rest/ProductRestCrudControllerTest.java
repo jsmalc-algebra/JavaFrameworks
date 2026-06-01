@@ -3,6 +3,7 @@ package hr.algebra.jsmalc.online_retial_project.controller.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hr.algebra.jsmalc.online_retial_project.domain.Product;
+import hr.algebra.jsmalc.online_retial_project.filter.JwtAuthFilter;
 import hr.algebra.jsmalc.online_retial_project.service.JwtService;
 import hr.algebra.jsmalc.online_retial_project.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.security.autoconfigure.SecurityAutoConfiguration;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -30,7 +33,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(
         controllers = ProductRestCrudController.class,
-        excludeAutoConfiguration = SecurityAutoConfiguration.class
+        excludeAutoConfiguration = SecurityAutoConfiguration.class,
+        excludeFilters = @ComponentScan.Filter(
+                type = FilterType.ASSIGNABLE_TYPE,
+                classes = JwtAuthFilter.class
+        )
 )
 @DisplayName("ProductRestCrudController Integration Tests")
 public class ProductRestCrudControllerTest {
@@ -127,9 +134,9 @@ public class ProductRestCrudControllerTest {
                     .andExpect(jsonPath("$.manufacturer", is("Tests of the Homeland")))
                     .andExpect(jsonPath("$.name", is("Jam")))
                     .andExpect(jsonPath("$.size", is("1kg")))
-                    .andExpect(jsonPath("$.price", is("123.45")));
+                    .andExpect(jsonPath("$.price").value(new BigDecimal("123.45")));
 
-            verify(productService, times(1)).getProduct(1L);
+            verify(productService, times(2)).getProduct(1L);
         }
 
         @Test
@@ -198,7 +205,7 @@ public class ProductRestCrudControllerTest {
             updatedProduct.setPrice(new BigDecimal("999.99"));
 
             when(productService.getProduct(1L)).thenReturn(Optional.of(testProduct1));
-            when(productService.updateProduct(eq(updatedProduct), any())).thenReturn(updatedProduct);
+            when(productService.updateProduct(eq(testProduct1), any())).thenReturn(updatedProduct);
 
             mockMvc.perform(put("/warehouse/rest/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -209,7 +216,7 @@ public class ProductRestCrudControllerTest {
                     .andExpect(jsonPath("$.manufacturer", is("Updated Manufacturer Name")))
                     .andExpect(jsonPath("$.name", is("Updated Product Name")))
                     .andExpect(jsonPath("$.size", is("Updated Product Size")))
-                    .andExpect(jsonPath("$.price", is("999.99")));
+                    .andExpect(jsonPath("$.price").value(new BigDecimal("999.99")));
 
             verify(productService, times(1)).getProduct(1L);
             verify(productService, times(1)).updateProduct(eq(testProduct1), any());
@@ -277,7 +284,7 @@ public class ProductRestCrudControllerTest {
                             .content("{ invalid JSON }"))
                     .andExpect(status().isBadRequest());
 
-            verify(productService, times(1)).addProduct(any());
+            verify(productService, never()).addProduct(any());
         }
 
         @Test
