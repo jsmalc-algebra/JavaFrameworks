@@ -1,10 +1,7 @@
-package hr.algebra.jsmalc.online_retial_project.controller.service;
+package hr.algebra.jsmalc.online_retial_project.service;
 
 import hr.algebra.jsmalc.online_retial_project.domain.Product;
 import hr.algebra.jsmalc.online_retial_project.repository.ProductRepositoryJpa;
-import hr.algebra.jsmalc.online_retial_project.service.JwtService;
-import hr.algebra.jsmalc.online_retial_project.service.ProductService;
-import hr.algebra.jsmalc.online_retial_project.service.ProductServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
