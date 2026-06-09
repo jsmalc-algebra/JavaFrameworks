@@ -34,6 +34,7 @@ public class SecurityConfiguration {
                         .requestMatchers(
                                 "/catalog/welcome**",
                                 "/catalog/details**",
+                                "/catalog/cart**",
                                 "/logout",
                                 "/auth/api/v1/logout",
                                 "/auth/api/v1/refreshToken"

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Cart</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<body>
+
+<!-- Same navbar as welcome.html -->
+
+<div class="hero-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:white; padding: 3rem 0;">
+  <div class="container">
+    <h1 class="display-4"><i class="bi bi-cart3"></i> Your Cart</h1>
+    <p class="lead" th:text="${cart.totalItems} + ' item(s) in your cart'"></p>
+  </div>
+</div>
+
+<div class="container mt-4">
+
+  <!-- Empty cart -->
+  <div th:if="${cart.items.isEmpty()}" class="text-center py-5">
+    <i class="bi bi-cart-x" style="font-size: 4rem; color: #dee2e6;"></i>
+    <h3 class="mt-3 text-muted">Your cart is empty</h3>
+    <a href="/catalog/welcome" class="btn btn-primary mt-3">
+      <i class="bi bi-shop"></i> Continue Shopping
+    </a>
+  </div>
+
+  <!-- Cart items -->
+  <div th:unless="${cart.items.isEmpty()}">
+    <div class="card mb-3" th:each="item : ${cart.items}">
+      <div class="card-body d-flex justify-content-between align-items-center">
+        <div>
+          <h5 th:text="${item.product.name}">Product</h5>
+          <small th:text="${item.product.manufacturer}">Manufacturer</small>
+        </div>
+        <div class="text-center">
+          <span class="badge bg-secondary">Qty: <span th:text="${item.quantity}">1</span></span>
+        </div>
+        <div>
+                    <span class="fs-5 fw-bold text-success"
+                          th:text="${item.subtotal}">0€</span>
+        </div>
+        <form th:action="@{/catalog/cart/remove}" method="post">
+          <input type="hidden" name="productId" th:value="${item.product.id}">
+          <button class="btn btn-outline-danger btn-sm" type="submit">
+            <i class="bi bi-trash"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Total + Place Order -->
+    <div class="card border-success">
+      <div class="card-body d-flex justify-content-between align-items-center">
+        <h4>Total: <span class="text-success" th:text="${cart.total} + '€'">0€</span></h4>
+        <form th:action="@{/catalog/cart/placeOrder}" method="post">
+          <button type="submit" class="btn btn-success btn-lg">
+            <i class="bi bi-check-circle"></i> Place Order
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="mt-3">
+      <a href="/catalog/welcome" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Continue Shopping
+      </a>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

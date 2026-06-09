@@ -77,10 +77,10 @@
                 🇩🇪 Deutsch
             </a>
         </div>
-        <button class="btn btn-outline-light btn-sm">
+        <a th:href="@{/catalog/cart/view}" class="btn btn-outline-light btn-sm">
             <i class="bi bi-cart3"></i>
             <span th:text="#{universal.cart}"></span>
-        </button>
+        </a>
     </div>
 </nav>
 <!-- Hero Section -->
@@ -140,10 +140,14 @@
                             <!-- Price and Action -->
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="price-tag" th:text="${product.price} + '€'">0.00€</span>
-                                <button class="btn btn-primary">
-                                    <i class="bi bi-cart-plus"></i>
-                                    <span th:text="#{universal.addToCart}"></span>
-                                </button>
+                                <form th:action="@{/catalog/cart/add}" method="post">
+                                    <input type="hidden" name="productId" th:value="${product.id}">
+                                    <input type="hidden" name="returnUrl" value="/catalog/welcome">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-cart-plus"></i>
+                                        <span th:text="#{universal.addToCart}"></span>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </a>
