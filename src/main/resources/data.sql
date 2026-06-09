@@ -1,9 +1,9 @@
-INSERT INTO PRODUCT (NAME, MANUFACTURER, SIZE, PRICE) VALUES
-('Liquid yogurt XXL', 'Pilos', '1.5kg', 1.69),
-('Crunchy peanut butter XXL', 'McKennedy', '1kg', 5.79),
-('Homemade burek with cheese', 'Store bakery', '220g', 0.85),
-('Mayo', 'STAR', '165g', 1.89),
-('Long-life milk XXL', 'Ducat', '8x1L', 6.99);
+INSERT INTO PRODUCT (NAME, MANUFACTURER, SIZE, PRICE, CURRENT_STOCK, LOW_STOCK_THRESHOLD) VALUES
+('Liquid yogurt XXL', 'Pilos', '1.5kg', 1.69, 500, 180),
+('Crunchy peanut butter XXL', 'McKennedy', '1kg', 5.79, 80, 15),
+('Homemade burek with cheese', 'Store bakery', '220g', 0.85, 30, 5),
+('Mayo', 'STAR', '165g', 1.89, 90, 30),
+('Long-life milk XXL', 'Ducat', '8x1L', 6.99, 300, 100);
 
 INSERT INTO USERS(USERNAME, PASSWORD, ENABLED)
 VALUES('user', '{noop}password', 1);

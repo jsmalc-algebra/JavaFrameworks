@@ -132,20 +132,26 @@
             <div class="price-display mb-4" th:text="'€' + ${product.price}">€0.00</div>
 
             <!-- Quantity & Add to Cart -->
-            <div class="mb-4">
-                <label class="form-label fw-bold" th:text="#{details.quantity}"></label>
-                <div class="input-group mb-3" style="max-width: 200px;">
-                    <input type="number" class="form-control text-center quantity-control" value="1" min="1">
-                </div>
-            </div>
-
             <!-- Action Buttons -->
-            <div class="d-grid gap-2">
-                <button class="btn btn-primary btn-lg">
-                    <i class="bi bi-cart-plus"></i>
-                    <span th:text="#{universal.addToCart}"></span>
-                </button>
-            </div>
+            <form th:action="@{/catalog/cart/add}" method="post">
+                <input type="hidden" name="productId" th:value="${product.id}"/>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold" th:text="#{details.quantity}"></label>
+                    <div class="input-group mb-3" style="max-width: 200px;">
+                        <input type="number" name="quantity"
+                               class="form-control text-center quantity-control"
+                               value="1" min="1"/>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="bi bi-cart-plus"></i>
+                        <span th:text="#{universal.addToCart}"></span>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 

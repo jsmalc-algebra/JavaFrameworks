@@ -18,9 +18,12 @@ public class CartService {
         this.productService = productService;
     }
 
-    public void addToCart(Long productId) {
-        productService.getProduct(productId)
-                .ifPresent(cart::addItem);
+    public void addToCart(Long productId, int quantity) {
+        productService.getProduct(productId).ifPresent(product -> {
+            for (int i = 0; i < quantity; i++) {
+                cart.addItem(product);
+            }
+        });
     }
 
     public void removeFromCart(Long productId) {

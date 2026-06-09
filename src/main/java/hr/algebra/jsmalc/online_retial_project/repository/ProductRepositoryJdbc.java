@@ -16,8 +16,10 @@ import java.util.Optional;
 public class ProductRepositoryJdbc implements ProductRepository {
 
     private static final String SELECT_PRODUCT = "SELECT * FROM PRODUCT";
-    private static final String INSERT_PRODUCT = "INSERT INTO PRODUCT (NAME, MANUFACTURER, SIZE, PRICE) VALUES (?,?,?,?)";
-    private static final String UPDATE_PRODUCT = "UPDATE PRODUCT SET NAME = ?, MANUFACTURER = ?, SIZE = ?, PRICE = ? WHERE ID = ?;";
+    private static final String INSERT_PRODUCT = "INSERT INTO PRODUCT (NAME, MANUFACTURER, SIZE, PRICE, CURRENT_STOCK, " +
+            "LOW_STOCK_THRESHOLD) VALUES (?,?,?,?,?,?)";
+    private static final String UPDATE_PRODUCT = "UPDATE PRODUCT SET NAME = ?, MANUFACTURER = ?, SIZE = ?, PRICE = ?, " +
+            "CURRENT_STOCK = ?, LOW_STOCK_THRESHOLD = ? WHERE ID = ?;";
     private static final String DELETE_PRODUCT = "DELETE FROM PRODUCT WHERE ID = ?;";
     private JdbcTemplate jdbcTemplate;
 
@@ -37,7 +39,9 @@ public class ProductRepositoryJdbc implements ProductRepository {
                 product.getName(),
                 product.getManufacturer(),
                 product.getSize(),
-                product.getPrice()
+                product.getPrice(),
+                product.getCurrentStock(),
+                product.getLowStockThreshold()
         );
     }
 
@@ -61,6 +65,8 @@ public class ProductRepositoryJdbc implements ProductRepository {
                 updatedProduct.getManufacturer(),
                 updatedProduct.getSize(),
                 updatedProduct.getPrice(),
+                updatedProduct.getCurrentStock(),
+                updatedProduct.getLowStockThreshold(),
                 originalProduct.getId()
         );
     }
@@ -74,6 +80,8 @@ public class ProductRepositoryJdbc implements ProductRepository {
             newProduct.setManufacturer(rs.getString("manufacturer"));
             newProduct.setSize(rs.getString("size"));
             newProduct.setPrice(rs.getBigDecimal("price"));
+            newProduct.setCurrentStock(rs.getInt("current_stock"));
+            newProduct.setLowStockThreshold(rs.getInt("low_stock_threshold"));
             return newProduct;
         }
     }

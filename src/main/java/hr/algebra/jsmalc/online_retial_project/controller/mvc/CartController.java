@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("catalog/cart/")
@@ -19,8 +20,11 @@ public class CartController {
     }
 
     @PostMapping("add")
-    public String add(@RequestParam Long productId, @RequestParam(defaultValue = "/catalog/welcome") String returnUrl) {
-        cartService.addToCart(productId);
+    public String add(@RequestParam Long productId,
+                      @RequestParam(defaultValue = "/catalog/welcome") String returnUrl,
+                      @RequestParam(defaultValue = "1") int quantity, RedirectAttributes redirectAttributes) {
+        cartService.addToCart(productId,quantity);
+        redirectAttributes.addFlashAttribute("message", "Product added to cart");
         return "redirect:" + returnUrl;
     }
 

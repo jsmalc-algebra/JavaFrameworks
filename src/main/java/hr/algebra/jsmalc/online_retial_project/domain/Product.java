@@ -22,4 +22,6 @@ public class Product {
     private String manufacturer;
     private String size;
     private BigDecimal price;
+    private int currentStock;
+    private int lowStockThreshold;
 }
