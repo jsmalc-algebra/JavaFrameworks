@@ -1,6 +1,9 @@
 package hr.algebra.jsmalc.online_retial_project.controller.mvc;
 
+import hr.algebra.jsmalc.online_retial_project.domain.Cart;
+import hr.algebra.jsmalc.online_retial_project.domain.Product;
 import hr.algebra.jsmalc.online_retial_project.service.CartService;
+import hr.algebra.jsmalc.online_retial_project.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +17,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class CartController {
 
     private final CartService cartService;
+    private final ProductService productService;
 
-    public CartController(CartService cartService) {
+    public CartController(CartService cartService, ProductService productService) {
         this.cartService = cartService;
+        this.productService = productService;
     }
 
     @PostMapping("add")
@@ -43,6 +48,12 @@ public class CartController {
     @PostMapping("placeOrder")
     public String placeOrder() {
         // TODO: persist the order to DB, trigger email, etc.
+        Cart cart = cartService.getCart();
+        cart.getItems().forEach(cartItem -> {
+            Product product = productService.getProduct(cartItem.getProduct().getId()).get();
+            product.setCurrentStock(product.getCurrentStock() - cartItem.getQuantity());
+            productService.updateProduct(product, product);
+        });
         cartService.clearCart();
         return "redirect:/catalog/welcome"; // or an order-confirmed page
     }
