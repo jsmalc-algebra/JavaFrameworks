@@ -37,7 +37,8 @@ public class SecurityConfiguration {
                                 "/catalog/cart**",
                                 "/logout",
                                 "/auth/api/v1/logout",
-                                "/auth/api/v1/refreshToken"
+                                "/auth/api/v1/refreshToken",
+                                "/orders**"
                         ).permitAll()
                         .requestMatchers(
                                 "/h2console/**",

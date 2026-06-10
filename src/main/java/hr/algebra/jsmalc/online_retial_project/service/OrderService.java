@@ -35,7 +35,7 @@ public class OrderService{
     }
 
     public List<Order> getOrdersByUsername(String username) {
-        return orderRepository.getOrdersByUsername(username);
+        return orderRepository.getOrdersByUserUsername(username);
     }
 
 

@@ -21,17 +21,19 @@ public class Order {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "username")
     private User user;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "products_id")
     private List<OrderItem> orderedItems;
     private LocalDateTime date;
-    private Boolean shipped;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ShippingStatus shippingStatus;
 
     @PrePersist
     protected void onCreate() {
         this.date = LocalDateTime.now();
-        this.shipped = false;
+        this.shippingStatus = ShippingStatus.PENDING;
     }
 }

@@ -109,19 +109,15 @@
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════════
-     NAVBAR  (identical structure to welcome.html)
-     ══════════════════════════════════════════════ -->
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
     <a href="#" class="navbar-user-link d-flex align-items-center gap-2 text-decoration-none text-light me-3">
       <i class="bi bi-person-circle fs-5"></i>
-      <!-- TODO: wire up → sec:authentication="name" -->
-      <span class="navbar-user-name placeholder-value">USERNAME</span>
+      <span class="navbar-user-name" sec:authentication="name"></span>
     </a>
     <i class="bi bi-shop-window"></i>
-    <!-- TODO: wire up → th:text="#{universal.store}" -->
-    <span class="navbar-brand mb-0 h5 placeholder-value">Store Name</span>
+    <span class="navbar-brand mb-0 h5" th:text="#{universal.store}"></span>
     <div class="language-switcher">
       <a th:href="@{?lang=en}"
          th:classappend="${#locale.language=='en'?'active':''}"
@@ -136,15 +132,11 @@
     </div>
     <a th:href="@{/catalog/cart/view}" class="btn btn-outline-light btn-sm">
       <i class="bi bi-cart3"></i>
-      <!-- TODO: wire up → th:text="#{universal.cart}" -->
-      <span class="placeholder-value">Cart</span>
+      <span th:text="#{universal.cart}"></span>
     </a>
   </div>
 </nav>
 
-<!-- ══════════════════════════════════════════════
-     HERO  (same gradient/style as welcome.html)
-     ══════════════════════════════════════════════ -->
 <div class="hero-section">
   <div class="container">
     <h1 class="display-4 mb-3">
@@ -157,9 +149,7 @@
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════
-     ORDERS TABLE
-     ══════════════════════════════════════════════ -->
+
 <div class="container mb-5">
   <div class="card shadow-sm">
     <div class="card-body p-0">
@@ -188,7 +178,7 @@
         <!-- Sample row 1 -->
         <tr class="order-row"
             onclick="window.location='#'"
-            th:onclick="|window.location='@{/catalog/orders/{id}(id=${order.id})}'|">
+            th:onclick="|window.location='@{/orders/{id}(id=${order.id})}'|">
           <td>
             <span class="order-id placeholder-value">#00412</span>
           </td>
@@ -200,7 +190,7 @@
           </td>
           <td class="placeholder-value">€129.99</td>
           <td class="text-end">
-            <!-- TODO: th:href="@{/catalog/orders/{id}(id=${order.id})}" -->
+            <!-- TODO: th:href="@{/orders/{id}(id=${order.id})}" -->
             <a href="#" class="btn btn-sm btn-outline-primary">
               <i class="bi bi-eye"></i> View
             </a>

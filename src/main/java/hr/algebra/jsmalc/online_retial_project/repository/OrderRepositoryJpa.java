@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface OrderRepositoryJpa extends CrudRepository<Order, Long> {
-    List<Order> getOrdersByUsername(String username);
+    List<Order> getOrdersByUserUsername(String username);
 }
