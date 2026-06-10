@@ -1,8 +1,10 @@
 package hr.algebra.jsmalc.online_retial_project.controller.mvc;
 
 import hr.algebra.jsmalc.online_retial_project.domain.Cart;
-import hr.algebra.jsmalc.online_retial_project.domain.Product;
+import hr.algebra.jsmalc.online_retial_project.domain.Order;
+import hr.algebra.jsmalc.online_retial_project.domain.OrderItem;
 import hr.algebra.jsmalc.online_retial_project.service.CartService;
+import hr.algebra.jsmalc.online_retial_project.service.OrderService;
 import hr.algebra.jsmalc.online_retial_project.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,15 +14,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Controller
 @RequestMapping("catalog/cart/")
 public class CartController {
 
     private final CartService cartService;
+    private final OrderService orderService;
 
-    public CartController(CartService cartService, ProductService productService) {
+    public CartController(CartService cartService, ProductService productService, OrderService orderService) {
         this.cartService = cartService;
-        this.productService = productService;
+        this.orderService = orderService;
     }
 
     @PostMapping("add")
@@ -47,6 +53,13 @@ public class CartController {
     @PostMapping("placeOrder")
     public String placeOrder() {
         Cart cart = cartService.getCart();
+
+        orderService.addOrder(
+                Order.builder()
+                        .orderedItems(cart.getItems())
+                        .build()
+        );
+
         // Will be delegated to shipment
 //        cart.getItems().forEach(cartItem -> {
 //            Product product = productService.getProduct(cartItem.getProduct().getId()).get();
