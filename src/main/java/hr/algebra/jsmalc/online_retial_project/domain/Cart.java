@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 public class Cart {
-    private List<CartItem> items = new ArrayList<CartItem>();
+    private List<OrderItem> items = new ArrayList<>();
 
     public void addItem(Product product) {
         items.stream()
@@ -16,7 +16,7 @@ public class Cart {
                 .findFirst()
                 .ifPresentOrElse(
                         existing -> existing.setQuantity(existing.getQuantity() + 1),
-                        () -> items.add(new CartItem(product))
+                        () -> items.add(new OrderItem(product))
                 );
     }
 
@@ -26,13 +26,13 @@ public class Cart {
 
     public BigDecimal getTotal() {
         return items.stream()
-                .map(CartItem::getSubtotal)
+                .map(OrderItem::getSubtotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public int getTotalItems() {
         return items.stream()
-                .mapToInt(CartItem::getQuantity)
+                .mapToInt(OrderItem::getQuantity)
                 .sum();
     }
 

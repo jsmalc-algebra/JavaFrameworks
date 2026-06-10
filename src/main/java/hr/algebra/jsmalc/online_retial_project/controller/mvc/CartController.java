@@ -17,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class CartController {
 
     private final CartService cartService;
-    private final ProductService productService;
 
     public CartController(CartService cartService, ProductService productService) {
         this.cartService = cartService;
@@ -47,13 +46,15 @@ public class CartController {
 
     @PostMapping("placeOrder")
     public String placeOrder() {
-        // TODO: persist the order to DB, trigger email, etc.
         Cart cart = cartService.getCart();
-        cart.getItems().forEach(cartItem -> {
-            Product product = productService.getProduct(cartItem.getProduct().getId()).get();
-            product.setCurrentStock(product.getCurrentStock() - cartItem.getQuantity());
-            productService.updateProduct(product, product);
-        });
+        // Will be delegated to shipment
+//        cart.getItems().forEach(cartItem -> {
+//            Product product = productService.getProduct(cartItem.getProduct().getId()).get();
+//            product.setCurrentStock(product.getCurrentStock() - cartItem.getQuantity());
+//            productService.updateProduct(product, product);
+//        });
+
+
         cartService.clearCart();
         return "redirect:/catalog/welcome"; // or an order-confirmed page
     }

@@ -1,5 +1,6 @@
 package hr.algebra.jsmalc.online_retial_project.domain;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,11 +10,18 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartItem {
-        private Product product;
-        private int quantity;
+@Entity
+public class OrderItem {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public CartItem(Product product) {
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+    private int quantity;
+
+    public OrderItem(Product product) {
         this.product = product;
         this.quantity = 1;
     }
