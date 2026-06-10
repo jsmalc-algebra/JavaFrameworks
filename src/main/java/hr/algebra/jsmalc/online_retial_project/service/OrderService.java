@@ -17,8 +17,8 @@ public class OrderService{
         return (List<Order>) orderRepository.findAll();
     }
 
-    public Order addOrder(Order order) {
-        return orderRepository.save(order);
+    public void addOrder(Order order) {
+        orderRepository.save(order);
     }
 
     public Optional<Order> getOrder(Long orderId) {
@@ -32,6 +32,10 @@ public class OrderService{
     public Order updateOrder(Order originalOrder, Order updatedOrder) {
         updatedOrder.setId(originalOrder.getId());
         return orderRepository.save(updatedOrder);
+    }
+
+    public List<Order> getOrdersByUsername(String username) {
+        return orderRepository.getOrdersByUsername(username);
     }
 
 

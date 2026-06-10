@@ -2,7 +2,6 @@ package hr.algebra.jsmalc.online_retial_project.controller.mvc;
 
 import hr.algebra.jsmalc.online_retial_project.domain.Cart;
 import hr.algebra.jsmalc.online_retial_project.domain.Order;
-import hr.algebra.jsmalc.online_retial_project.domain.OrderItem;
 import hr.algebra.jsmalc.online_retial_project.service.CartService;
 import hr.algebra.jsmalc.online_retial_project.service.OrderService;
 import hr.algebra.jsmalc.online_retial_project.service.ProductService;
@@ -13,9 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Controller
 @RequestMapping("catalog/cart/")
