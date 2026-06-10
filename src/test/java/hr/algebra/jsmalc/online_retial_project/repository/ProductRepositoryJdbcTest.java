@@ -37,10 +37,12 @@ class ProductRepositoryJdbcTest {
     private Product testProduct1;
     private Product testProduct2;
 
-    private static final String SELECT_PRODUCT      = "SELECT * FROM PRODUCT";
-    private static final String INSERT_PRODUCT      = "INSERT INTO PRODUCT (NAME, MANUFACTURER, SIZE, PRICE) VALUES (?,?,?,?)";
-    private static final String UPDATE_PRODUCT      = "UPDATE PRODUCT SET NAME = ?, MANUFACTURER = ?, SIZE = ?, PRICE = ? WHERE ID = ?;";
-    private static final String DELETE_PRODUCT      = "DELETE FROM PRODUCT WHERE ID = ?;";
+    private static final String SELECT_PRODUCT = "SELECT * FROM PRODUCT";
+    private static final String INSERT_PRODUCT = "INSERT INTO PRODUCT (NAME, MANUFACTURER, SIZE, PRICE, CURRENT_STOCK, " +
+            "LOW_STOCK_THRESHOLD) VALUES (?,?,?,?,?,?)";
+    private static final String UPDATE_PRODUCT = "UPDATE PRODUCT SET NAME = ?, MANUFACTURER = ?, SIZE = ?, PRICE = ?, " +
+            "CURRENT_STOCK = ?, LOW_STOCK_THRESHOLD = ? WHERE ID = ?;";
+    private static final String DELETE_PRODUCT = "DELETE FROM PRODUCT WHERE ID = ?;";
     private static final String SELECT_PRODUCT_BY_ID = SELECT_PRODUCT + " WHERE ID = ?";
 
     @BeforeEach
@@ -148,7 +150,9 @@ class ProductRepositoryJdbcTest {
                     eq(testProduct1.getName()),
                     eq(testProduct1.getManufacturer()),
                     eq(testProduct1.getSize()),
-                    eq(testProduct1.getPrice())
+                    eq(testProduct1.getPrice()),
+                    eq(testProduct1.getCurrentStock()),
+                    eq(testProduct1.getLowStockThreshold())
             );
         }
 
@@ -165,7 +169,9 @@ class ProductRepositoryJdbcTest {
                     eq("Bare Product"),
                     isNull(),
                     isNull(),
-                    isNull()
+                    isNull(),
+                    eq(0),
+                    eq(0)
             );
         }
 
@@ -182,7 +188,9 @@ class ProductRepositoryJdbcTest {
                     eq("Jam"),
                     eq("Tests of the Homeland"),
                     eq("1kg"),
-                    eq(new BigDecimal("123.45"))
+                    eq(new BigDecimal("123.45")),
+                    eq(0),
+                    eq(0)
             );
         }
     }
@@ -209,6 +217,8 @@ class ProductRepositoryJdbcTest {
                     eq("Updated Manufacturer"),
                     eq("2kg"),
                     eq(new BigDecimal("200.00")),
+                    eq(0),
+                    eq(0),
                     eq(1L)   // ID comes from originalProduct
             );
         }
@@ -225,6 +235,8 @@ class ProductRepositoryJdbcTest {
             // The ID passed to the query must be testProduct1's ID (1L), not 99L
             verify(jdbcTemplate).update(
                     eq(UPDATE_PRODUCT),
+                    any(),
+                    any(),
                     any(),
                     any(),
                     any(),

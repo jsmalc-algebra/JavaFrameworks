@@ -37,13 +37,15 @@ class WelcomeScreenControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private Product createTestProduct(Long id, String name, String manufacturer, String size, BigDecimal price) {
+    private Product createTestProduct(Long id, String name, String manufacturer, String size, BigDecimal price, int stock, int lowStockThreshold) {
         Product product = new Product();
         product.setId(id);
         product.setName(name);
         product.setManufacturer(manufacturer);
         product.setSize(size);
         product.setPrice(price);
+        product.setCurrentStock(stock);
+        product.setLowStockThreshold(lowStockThreshold);
         return product;
     }
 
@@ -56,7 +58,9 @@ class WelcomeScreenControllerIntegrationTest {
                 "Strawberry Jam",
                 "Tests of the homeland",
                 "1kg",
-                new BigDecimal("123.45")
+                new BigDecimal("123.45"),
+                100,
+                10
         );
 
         Product product2 = createTestProduct(
@@ -64,7 +68,9 @@ class WelcomeScreenControllerIntegrationTest {
                 "Spahetti",
                 "Burrial",
                 "2kg",
-                new BigDecimal("123.45")
+                new BigDecimal("123.45"),
+                1000,
+                333
         );
         List<Product> products = List.of(product1, product2);
 
@@ -115,7 +121,9 @@ class WelcomeScreenControllerIntegrationTest {
                 "Strawberry Jam",
                 "Tests of the homeland",
                 "1kg",
-                new BigDecimal("123.45")
+                new BigDecimal("123.45"),
+                100,
+                10
         );
         when(productService.getProduct(1L)).thenReturn(Optional.of(product1));
 
@@ -167,7 +175,9 @@ class WelcomeScreenControllerIntegrationTest {
                 "Strawberry Jam",
                 "Tests of the homeland",
                 "1kg",
-                new BigDecimal("123.45")
+                new BigDecimal("123.45"),
+                100,
+                10
         );
 
         when(productService.getProduct(1L)).thenReturn(Optional.of(product1));
@@ -190,7 +200,9 @@ class WelcomeScreenControllerIntegrationTest {
                 "Strawberry Jam",
                 "Tests of the homeland",
                 "1kg",
-                new BigDecimal("123.45")
+                new BigDecimal("123.45"),
+                100,
+                10
         );
 
         when(productService.getProduct(1L)).thenReturn(Optional.of(product1));

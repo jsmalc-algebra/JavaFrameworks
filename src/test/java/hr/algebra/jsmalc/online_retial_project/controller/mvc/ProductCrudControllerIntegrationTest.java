@@ -39,7 +39,10 @@ public class ProductCrudControllerIntegrationTest {
                         .param("name","Strawberry Jam")
                         .param("description","Tests of the Homeland")
                         .param("size","1kg")
-                        .param("price","123.45"))
+                        .param("price","123.45")
+                        .param("currentStock","100")
+                        .param("lowStockThreshold","50")
+                )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/catalog/welcome"));
     }
