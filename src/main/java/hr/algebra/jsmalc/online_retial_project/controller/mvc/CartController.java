@@ -3,8 +3,11 @@ package hr.algebra.jsmalc.online_retial_project.controller.mvc;
 import hr.algebra.jsmalc.online_retial_project.domain.Cart;
 import hr.algebra.jsmalc.online_retial_project.domain.Order;
 import hr.algebra.jsmalc.online_retial_project.service.CartService;
+import hr.algebra.jsmalc.online_retial_project.service.MyUserDetailsService;
 import hr.algebra.jsmalc.online_retial_project.service.OrderService;
 import hr.algebra.jsmalc.online_retial_project.service.ProductService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +23,7 @@ public class CartController {
     private final CartService cartService;
     private final OrderService orderService;
 
-    public CartController(CartService cartService, ProductService productService, OrderService orderService) {
+    public CartController(CartService cartService, ProductService productService, OrderService orderService, MyUserDetailsService myUserDetailsService) {
         this.cartService = cartService;
         this.orderService = orderService;
     }
@@ -47,12 +50,13 @@ public class CartController {
     }
 
     @PostMapping("placeOrder")
-    public String placeOrder() {
+    public String placeOrder(@AuthenticationPrincipal UserDetails userDetails) {
         Cart cart = cartService.getCart();
 
         orderService.addOrder(
                 Order.builder()
                         .orderedItems(cart.getItems())
+                        .username(userDetails.getUsername())
                         .build()
         );
 

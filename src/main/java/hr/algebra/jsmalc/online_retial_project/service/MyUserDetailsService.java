@@ -28,5 +28,11 @@ public class MyUserDetailsService /*implements UserDetailsService*/ {
                 .roles(rolesString)
                 .build();
     }
+
+    public Boolean isUserStaff(String username) throws UsernameNotFoundException {
+        return usersRepository.findByUsername(username).getRoles()
+                .stream().anyMatch(role -> role.getAuthority().equals("ROLE_ADMIN"));
+        // TODO: Change when Customer/Staff/Manager roles are implemented
+    }
 }
 

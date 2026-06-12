@@ -7,7 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Data
@@ -15,16 +17,16 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Builder
+@Table(name = "ORDERS")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "username")
-    private User user;
+    @Column(name = "username")
+    private String username;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "products_id")
+    @JoinColumn(name = "order_id")
     private List<OrderItem> orderedItems;
     private LocalDateTime date;
     @Enumerated(EnumType.STRING)
@@ -35,5 +37,26 @@ public class Order {
     protected void onCreate() {
         this.date = LocalDateTime.now();
         this.shippingStatus = ShippingStatus.PENDING;
+    }
+
+    public String getShippingStatusClass() {
+        return switch (shippingStatus) {
+            case PENDING -> "badge-pending";
+            case SHIPPED -> "badge-shipped";
+            case DELIVERED -> "badge-delivered";
+            case CANCELLED -> "badge-cancelled";
+        };
+    }
+
+    public String getFormattedDate() {
+        return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    }
+
+    public String getOrderTotal() {
+        return orderedItems.stream().map(OrderItem::getSubtotal).reduce(BigDecimal.ZERO, BigDecimal::add).toString();
+    }
+
+    public String getShippingStatus() {
+        return shippingStatus.toString();
     }
 }

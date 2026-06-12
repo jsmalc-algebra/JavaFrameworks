@@ -112,19 +112,17 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
-    <a href="#" class="navbar-user-link d-flex align-items-center gap-2 text-decoration-none text-light me-3">
-      <i class="bi bi-person-circle fs-5"></i>
-      <span class="navbar-user-name" sec:authentication="name"></span>
-    </a>
-    <i class="bi bi-shop-window"></i>
-    <span class="navbar-brand mb-0 h5" th:text="#{universal.store}"></span>
+      <a class="navbar-brand" href="/catalog/welcome">
+          <i class="bi bi-shop"></i>
+          <span th:text="#{universal.store}"></span>
+      </a>
     <div class="language-switcher">
-      <a th:href="@{?lang=en}"
+      <a th:href="@{''(username=${#authentication.name},lang=en)}"
          th:classappend="${#locale.language=='en'?'active':''}"
          class="lang-btn">
         🇬🇧 English
       </a>
-      <a th:href="@{?lang=de}"
+      <a th:href="@{''(username=${#authentication.name},lang=de)}"
          th:classappend="${#locale.language=='de'?'active':''}"
          class="lang-btn">
         🇩🇪 Deutsch
@@ -142,10 +140,10 @@
     <h1 class="display-4 mb-3">
       <i class="bi bi-receipt"></i>
       <!-- TODO: wire up → th:text="#{orders.title}" -->
-      <span class="placeholder-value">Orders</span>
+      <span th:text="#{overview.title}">Orders</span>
     </h1>
     <!-- TODO: wire up → th:text="#{orders.pitch}" -->
-    <p class="lead placeholder-value">Browse and manage all customer orders.</p>
+    <p th:text="#{overview.pitch}" class="lead">Browse and manage all customer orders.</p>
   </div>
 </div>
 
@@ -154,97 +152,31 @@
   <div class="card shadow-sm">
     <div class="card-body p-0">
       <table class="table orders-table mb-0">
-        <thead>
-        <tr>
-          <th><i class="bi bi-hash"></i> Order ID</th>
-          <th><i class="bi bi-person"></i> Customer</th>
-          <th><i class="bi bi-calendar-event"></i> Date</th>
-          <th><i class="bi bi-box-seam"></i> Status</th>
-          <!-- Visible to admins only -->
-          <!-- TODO: wrap in sec:authorize="hasRole('ROLE_ADMIN')" -->
-          <th><i class="bi bi-currency-euro"></i> Total</th>
-          <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <!--
-            TODO: replace this block with:
-            <tr th:each="order : ${orders}" …>
+          <thead>
+          <tr>
+              <th><i class="bi bi-hash"></i> Order ID</th>
+              <th><i class="bi bi-person"></i> Customer</th>
+              <th><i class="bi bi-calendar-event"></i> Date</th>
+              <th><i class="bi bi-box-seam"></i> Status</th>
+              <th><i class="bi bi-currency-euro"></i> Total</th>
+          </tr>
+          </thead>
 
-            The three sample rows below are static placeholders.
-            Delete them once the Thymeleaf loop is wired up.
-        -->
-
-        <!-- Sample row 1 -->
-        <tr class="order-row"
-            onclick="window.location='#'"
-            th:onclick="|window.location='@{/orders/{id}(id=${order.id})}'|">
-          <td>
-            <span class="order-id placeholder-value">#00412</span>
-          </td>
-          <td class="placeholder-value">Anna Kowalski</td>
-          <td class="placeholder-value">Jun 8, 2026</td>
-          <td>
-            <!-- TODO: th:classappend based on order.status -->
-            <span class="badge badge-delivered placeholder-value">Delivered</span>
-          </td>
-          <td class="placeholder-value">€129.99</td>
-          <td class="text-end">
-            <!-- TODO: th:href="@{/orders/{id}(id=${order.id})}" -->
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-eye"></i> View
-            </a>
-          </td>
-        </tr>
-
-        <!-- Sample row 2 -->
-        <tr class="order-row"
-            onclick="window.location='#'"
-            th:onclick="|window.location='@{/catalog/orders/{id}(id=${order.id})}'|">
-          <td>
-            <span class="order-id placeholder-value">#00411</span>
-          </td>
-          <td class="placeholder-value">Marco Rossi</td>
-          <td class="placeholder-value">Jun 7, 2026</td>
-          <td>
-            <span class="badge badge-shipped placeholder-value">Shipped</span>
-          </td>
-          <td class="placeholder-value">€54.50</td>
-          <td class="text-end">
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-eye"></i> View
-            </a>
-          </td>
-        </tr>
-
-        <!-- Sample row 3 -->
-        <tr class="order-row"
-            onclick="window.location='#'"
-            th:onclick="|window.location='@{/catalog/orders/{id}(id=${order.id})}'|">
-          <td>
-            <span class="order-id placeholder-value">#00410</span>
-          </td>
-          <td class="placeholder-value">Lena Müller</td>
-          <td class="placeholder-value">Jun 5, 2026</td>
-          <td>
-            <span class="badge badge-pending placeholder-value">Pending</span>
-          </td>
-          <td class="placeholder-value">€210.00</td>
-          <td class="text-end">
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-eye"></i> View
-            </a>
-          </td>
-        </tr>
-
-        </tbody>
+          <tbody>
+          <tr th:each="order : ${orders}" class="order-row" th:classappend="${order.getShippingStatusClass()}" onclick="window.location='#'">
+            <td><span class="order-id" th:text="'#'+${order.getId()}">999</span></td>
+            <td th:text="${order.getUsername()}"></td>
+            <td th:text="${order.getFormattedDate()}"></td>
+            <td><span class="badge" th:classappend="${order.getShippingStatusClass()}" th:text="${order.getShippingStatus()}"></span></td>
+            <td th:text="${order.getOrderTotal()}+'€'"></td>
+          </tr>
+          </tbody>
       </table>
     </div>
   </div>
 
   <!-- Empty state — shown when ${orders} is empty -->
-  <!-- TODO: th:if="${#lists.isEmpty(orders)}" -->
-  <div class="text-center text-muted py-5 d-none">
+  <div th:if="${#lists.isEmpty(orders)}" class="text-center text-muted py-5 d-none">
     <i class="bi bi-inbox fs-1"></i>
     <p class="mt-2">No orders yet.</p>
   </div>
