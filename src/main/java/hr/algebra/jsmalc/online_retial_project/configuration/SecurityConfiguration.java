@@ -39,15 +39,16 @@ public class SecurityConfiguration {
                                 "/catalog/welcome**",
                                 "/catalog/details**",
                                 "/catalog/cart**",
+                                "/orders/overview",
+                                "/orders/details"
+                        ).hasRole("USER")
+                        .requestMatchers(
                                 "/logout",
                                 "/auth/api/v1/logout",
+                                "/auth/api/v1/login",
                                 "/auth/api/v1/refreshToken",
-                                "/orders**",
                                 "/h2console/**"
                         ).permitAll()
-                        .requestMatchers(
-                                "/auth/api/v1/login"
-                        ).anonymous()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

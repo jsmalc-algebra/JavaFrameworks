@@ -73,6 +73,8 @@ INSERT INTO ORDER_ITEM (QUANTITY, ORDER_ID, PRODUCT_ID) VALUES
                                                             (33, 13, 3),
                                                             (72, 13, 4);
 
+
+
 INSERT INTO AUTHORITIES(USERNAME, AUTHORITY)
 VALUES('user', 'ROLE_USER');
 
