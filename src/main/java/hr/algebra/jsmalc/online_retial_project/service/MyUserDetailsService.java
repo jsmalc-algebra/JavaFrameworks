@@ -4,7 +4,6 @@ import hr.algebra.jsmalc.online_retial_project.domain.User;
 import hr.algebra.jsmalc.online_retial_project.domain.UserRole;
 import hr.algebra.jsmalc.online_retial_project.repository.UsersRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -17,25 +16,34 @@ public class MyUserDetailsService /*implements UserDetailsService*/ {
     private UsersRepository usersRepository;
 
     //@Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = usersRepository.getByUsername(username);
 
-        String[] rolesString = new String[user.getRoles().size()];
+        List<UserRole> userRoles = user.getRoles();
 
-        for (int i = 0; i < user.getRoles().size(); i++) {
-            rolesString[i] = user.getRoles().get(i).getAuthority();
-        }
-
-        return org.springframework.security.core.userdetails.User
-                .withUsername(username)
+        return User
+                .builder()
+                .username(username)
                 .password(user.getPassword())
-                .roles(rolesString)
+                .roles(userRoles)
                 .build();
     }
 
     public Boolean isUserStaff(String username) throws UsernameNotFoundException {
         return usersRepository.getByUsername(username).getRoles()
                 .stream().anyMatch(role -> role.getAuthority().equals("ROLE_STAFF"));
+    }
+
+    public List<User> findAllUsers() {
+        return usersRepository.findAll();
+    }
+
+    public void addUser(User user) {
+        usersRepository.save(user);
+    }
+
+    public void deleteUser(String username) {
+        usersRepository.deleteByUsername(username);
     }
 }
 

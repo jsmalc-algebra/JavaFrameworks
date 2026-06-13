@@ -43,6 +43,9 @@ public class SecurityConfiguration {
                                 "/orders/details"
                         ).hasRole("USER")
                         .requestMatchers(
+                                "/admin/**"
+                        ).hasRole("MANAGER")
+                        .requestMatchers(
                                 "/logout",
                                 "/auth/api/v1/logout",
                                 "/auth/api/v1/login",

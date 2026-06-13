@@ -1,15 +1,10 @@
 package hr.algebra.jsmalc.online_retial_project.repository;
 
-
-import hr.algebra.jsmalc.online_retial_project.domain.User;
+import hr.algebra.jsmalc.online_retial_project.domain.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
-public interface UsersRepository extends JpaRepository<User, String> {
-    User getByUsername(String username);
-
+public interface UserRoleRepository extends JpaRepository<UserRole, Long> {
     @Transactional
     void deleteByUsername(String username);
 }
