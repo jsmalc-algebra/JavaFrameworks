@@ -42,10 +42,10 @@ public class SecurityConfiguration {
                                 "/logout",
                                 "/auth/api/v1/logout",
                                 "/auth/api/v1/refreshToken",
-                                "/orders**"
+                                "/orders**",
+                                "/h2console/**"
                         ).permitAll()
                         .requestMatchers(
-                                "/h2console/**",
                                 "/auth/api/v1/login"
                         ).anonymous()
                         .anyRequest().authenticated()

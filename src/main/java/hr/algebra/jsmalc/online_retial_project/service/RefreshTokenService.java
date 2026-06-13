@@ -1,6 +1,7 @@
 package hr.algebra.jsmalc.online_retial_project.service;
 import hr.algebra.jsmalc.online_retial_project.domain.RefreshToken;
 import hr.algebra.jsmalc.online_retial_project.repository.RefreshTokenRepository;
+import hr.algebra.jsmalc.online_retial_project.repository.UsersRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class RefreshTokenService {
         existingRefreshToken.ifPresent(refreshToken -> refreshTokenRepository.deleteByToken(refreshToken.getToken()));
 
         RefreshToken refreshToken = RefreshToken.builder()
-                .userInfo(userRepository.findByUsername(username))
+                .userInfo(userRepository.getByUsername(username))
                 .token(UUID.randomUUID().toString())
                 .expiryDate(Instant.now().plusMillis(600000)) // set expiry of refresh token to 10 minutes - you can configure it application.properties file
                 .build();

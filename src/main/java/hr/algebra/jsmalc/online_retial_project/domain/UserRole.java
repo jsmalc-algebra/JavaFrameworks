@@ -11,6 +11,7 @@ public class UserRole {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String authority;
+    @Column(name = "username")
     private String username;
 
 //    @ManyToOne

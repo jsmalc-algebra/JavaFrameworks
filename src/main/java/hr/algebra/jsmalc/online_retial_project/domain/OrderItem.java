@@ -29,6 +29,10 @@ public class OrderItem {
     public BigDecimal getSubtotal() {
         return product.getPrice().multiply(BigDecimal.valueOf(quantity));
     }
+
+    public String getProductName() {return product.getName();}
+
+    public String getProductPrice() {return product.getPrice().toString();}
 }
 
 

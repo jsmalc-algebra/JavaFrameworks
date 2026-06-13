@@ -18,6 +18,6 @@ public class User {
     private String username;
     private String password;
     private Boolean enabled;
-    @OneToMany(mappedBy = "authority")
+    @OneToMany(mappedBy = "username", fetch = FetchType.EAGER)
     private List<UserRole> roles;
 }

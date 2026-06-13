@@ -52,7 +52,7 @@ public class Order {
         return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
-    public String getOrderTotal() {
+    public String getGrandTotal() {
         return orderedItems.stream().map(OrderItem::getSubtotal).reduce(BigDecimal.ZERO, BigDecimal::add).toString();
     }
 

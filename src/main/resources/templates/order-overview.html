@@ -139,10 +139,10 @@
   <div class="container">
     <h1 class="display-4 mb-3">
       <i class="bi bi-receipt"></i>
-      <!-- TODO: wire up → th:text="#{orders.title}" -->
+
       <span th:text="#{overview.title}">Orders</span>
     </h1>
-    <!-- TODO: wire up → th:text="#{orders.pitch}" -->
+
     <p th:text="#{overview.pitch}" class="lead">Browse and manage all customer orders.</p>
   </div>
 </div>
@@ -154,31 +154,43 @@
       <table class="table orders-table mb-0">
           <thead>
           <tr>
-              <th><i class="bi bi-hash"></i> Order ID</th>
-              <th><i class="bi bi-person"></i> Customer</th>
-              <th><i class="bi bi-calendar-event"></i> Date</th>
-              <th><i class="bi bi-box-seam"></i> Status</th>
-              <th><i class="bi bi-currency-euro"></i> Total</th>
+              <th>
+                  <i class="bi bi-hash"></i>
+                  <span th:text="#{order.order} + ' ID'">
+                      Order ID
+                  </span>
+              </th>
+              <th>
+                  <i class="bi bi-person"></i>
+                  <span th:text="#{overview.customer}">Customer</span>
+              </th>
+              <th>
+                  <i class="bi bi-calendar-event"></i>
+                  <span th:text="#{overview.date}">Date</span>
+              </th>
+              <th>
+                  <i class="bi bi-box-seam"></i>
+                  <span th:text="#{overview.status}">Status</span>
+              </th>
+              <th>
+                  <i class="bi bi-currency-euro"></i>
+                  <span th:text="#{overview.total}">Total</span>
+              </th>
           </tr>
           </thead>
 
           <tbody>
-          <tr th:each="order : ${orders}" class="order-row" th:classappend="${order.getShippingStatusClass()}" onclick="window.location='#'">
+          <tr th:each="order : ${orders}" class="order-row" th:classappend="${order.getShippingStatusClass()}"
+              onclick="window.location='#'" th:onclick="|window.location.href='@{/orders/details(id=${order.getId()})}'|">
             <td><span class="order-id" th:text="'#'+${order.getId()}">999</span></td>
             <td th:text="${order.getUsername()}"></td>
             <td th:text="${order.getFormattedDate()}"></td>
-            <td><span class="badge" th:classappend="${order.getShippingStatusClass()}" th:text="${order.getShippingStatus()}"></span></td>
-            <td th:text="${order.getOrderTotal()}+'€'"></td>
+            <td><span class="badge" th:classappend="${order.getShippingStatusClass()}" th:text="#{${'shipping.status.' + order.getShippingStatus()}}"></span></td>
+            <td th:text="${order.getGrandTotal()}+'€'"></td>
           </tr>
           </tbody>
       </table>
     </div>
-  </div>
-
-  <!-- Empty state — shown when ${orders} is empty -->
-  <div th:if="${#lists.isEmpty(orders)}" class="text-center text-muted py-5 d-none">
-    <i class="bi bi-inbox fs-1"></i>
-    <p class="mt-2">No orders yet.</p>
   </div>
 </div>
 
