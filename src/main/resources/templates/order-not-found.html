@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Not Found - Product Catalog</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+        .not-found-card {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        .not-found-icon {
+            font-size: 6rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            margin-bottom: 1.5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+        .error-code {
+            font-size: 5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        .home-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .home-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-10px); }
+        }
+        .language-switcher {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .lang-btn {
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            color: #495057;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .lang-btn:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+            color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.2);
+        }
+        .lang-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <i class="bi bi-shop-window"></i>
+        <span class="navbar-brand mb-0 h5" th:text="#{universal.store}"></span>
+        <div class="language-switcher">
+            <a th:href="@{''(id=${param.id}, lang='en')}"
+               th:classappend="${#locale.language=='en'?'active':''}"
+               class="lang-btn">
+                🇬🇧 English
+            </a>
+            <a th:href="@{''(id=${param.id}, lang='de')}"
+               th:classappend="${#locale.language=='de'?'active':''}"
+               class="lang-btn">
+                🇩🇪 Deutsch
+            </a>
+        </div>
+        <button class="btn btn-outline-light btn-sm">
+            <i class="bi bi-cart3"></i>
+            <span th:text="#{universal.cart}"></span>
+        </button>
+    </div>
+</nav>
+
+<div class="hero-section">
+    <div class="container">
+        <h1 class="display-4 mb-3">
+            <i class="bi bi-shop"></i>
+            <span th:text="#{universal.store}"></span>
+        </h1>
+        <p class="lead" th:text="#{welcome.pitch}"></p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="not-found-card bg-white">
+
+                <i class="bi bi-receipt not-found-icon"></i>
+
+                <div class="error-code">404</div>
+                <h2 class="fw-bold mt-2 mb-1" th:text="#{orderNotFound.title}">Order Not Found</h2>
+                <p class="text-muted mb-4" th:text="#{orderNotFound.explanation}">
+                    The order you're looking for doesn't exist or you may not have permission to view it.
+                </p>
+
+                <a th:href="@{/orders/overview(username=${#authentication.name})}" class="home-btn">
+                    <i class="bi bi-list-ul"></i>
+                    <span th:text="#{orderNotFound.return}">Back to Orders</span>
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

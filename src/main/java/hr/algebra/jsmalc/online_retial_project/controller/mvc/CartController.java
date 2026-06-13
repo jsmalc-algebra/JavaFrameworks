@@ -2,6 +2,7 @@ package hr.algebra.jsmalc.online_retial_project.controller.mvc;
 
 import hr.algebra.jsmalc.online_retial_project.domain.Cart;
 import hr.algebra.jsmalc.online_retial_project.domain.Order;
+import hr.algebra.jsmalc.online_retial_project.domain.Product;
 import hr.algebra.jsmalc.online_retial_project.service.CartService;
 import hr.algebra.jsmalc.online_retial_project.service.MyUserDetailsService;
 import hr.algebra.jsmalc.online_retial_project.service.OrderService;
@@ -22,10 +23,12 @@ public class CartController {
 
     private final CartService cartService;
     private final OrderService orderService;
+    private final ProductService productService;
 
-    public CartController(CartService cartService, ProductService productService, OrderService orderService, MyUserDetailsService myUserDetailsService) {
+    public CartController(CartService cartService, ProductService productService, OrderService orderService, ProductService productService1) {
         this.cartService = cartService;
         this.orderService = orderService;
+        this.productService = productService;
     }
 
     @PostMapping("add")
@@ -60,15 +63,14 @@ public class CartController {
                         .build()
         );
 
-        // Will be delegated to shipment
-//        cart.getItems().forEach(cartItem -> {
-//            Product product = productService.getProduct(cartItem.getProduct().getId()).get();
-//            product.setCurrentStock(product.getCurrentStock() - cartItem.getQuantity());
-//            productService.updateProduct(product, product);
-//        });
+        cart.getItems().forEach(cartItem -> {
+            Product product = productService.getProduct(cartItem.getProduct().getId()).get();
+            product.setCurrentStock(product.getCurrentStock() - cartItem.getQuantity());
+            productService.updateProduct(product, product);
+        });
 
 
         cartService.clearCart();
-        return "redirect:/catalog/welcome"; // or an order-confirmed page
+        return "redirect:/catalog/welcome";
     }
 }

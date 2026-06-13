@@ -34,13 +34,8 @@ public class MyUserDetailsService /*implements UserDetailsService*/ {
     }
 
     public Boolean isUserStaff(String username) throws UsernameNotFoundException {
-        User user = usersRepository.getByUsername(username);
-        List<UserRole> roles = user.getRoles();
-        Boolean flag = roles.stream().anyMatch(userRole -> userRole.getAuthority().equals("ROLE_ADMIN"));
-        return flag;
-//        return usersRepository.findByUsername(username).getRoles()
-//                .stream().anyMatch(role -> role.getAuthority().equals("ROLE_ADMIN"));
-        // TODO: Change when Customer/Staff/Manager roles are implemented
+        return usersRepository.getByUsername(username).getRoles()
+                .stream().anyMatch(role -> role.getAuthority().equals("ROLE_STAFF"));
     }
 }
 

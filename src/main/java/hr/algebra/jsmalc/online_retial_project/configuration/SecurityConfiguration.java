@@ -34,7 +34,7 @@ public class SecurityConfiguration {
                                 "/catalog/updateScreen",
                                 "/catalog/create",
                                 "/catalog/deleteProduct"
-                        ).hasRole("ADMIN")
+                        ).hasRole("STAFF")
                         .requestMatchers(
                                 "/catalog/welcome**",
                                 "/catalog/details**",

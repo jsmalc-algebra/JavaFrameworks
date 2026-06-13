@@ -120,21 +120,6 @@
       outline: none;
       box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
     }
-    .btn-update-status {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 0.4rem 1rem;
-      font-size: 0.9rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: opacity 0.2s, transform 0.15s;
-    }
-    .btn-update-status:hover {
-      opacity: 0.9;
-      transform: translateY(-1px);
-    }
 
     /* ── Hero order meta ── */
     .order-meta {
@@ -247,29 +232,7 @@
             Pending
           </span>
         </div>
-
-
-        <form class="status-change-form"
-              sec:authorize="hasRole('ROLE_ADMIN')"
-              th:action="@{/orders/{id}/status(id=${order.getId()})}"
-              method="post">
-
-          <select>
-            <option th:each="status : ${statuses}"
-                    th:value="${status}"
-                    th:text="#{${'shipping.status.' + status}}">
-            </option>
-          </select>
-
-          <button type="submit" class="btn-update-status">
-            <i class="bi bi-arrow-repeat"></i> Update status
-          </button>
-
-        </form>
-
       </div>
-
-
     </div>
   </div>
 </div>
