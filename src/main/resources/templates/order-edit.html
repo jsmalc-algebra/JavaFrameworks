@@ -174,7 +174,7 @@
 </head>
 <body>
 
-<!-- ═══════════ NAVBAR ═══════════ -->
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
     <a class="navbar-brand" href="/catalog/welcome">
@@ -200,7 +200,7 @@
   </div>
 </nav>
 
-<!-- ═══════════ HERO ═══════════ -->
+
 <div class="hero-section">
   <div class="container">
     <h1 class="display-4 mb-2">
@@ -215,19 +215,18 @@
   </div>
 </div>
 
-<!-- ═══════════ MAIN FORM ═══════════ -->
+
 <div class="container mb-5">
   <div class="card shadow-sm">
     <div class="card-body p-0">
 
-      <form th:action="@{/orders/update}" method="post">
+      <form th:action="@{/orders/update}" method="post" th:object="${order}">
 
-        <!-- Hidden fields: order identity, passed along on submit -->
-        <input type="hidden" name="orderId"       th:value="${order.getId()}"/>
-        <input type="hidden" name="orderUsername" th:value="${order.getUsername()}"/>
-        <input type="hidden" name="orderDate"     th:value="${order.getFormattedDate()}"/>
 
-        <!-- ─── Items table ─── -->
+        <input type="hidden" name="orderId" th:field="*{id}"/>
+        <input type="hidden" name="orderUsername" th:field="*{username}"/>
+        <input type="hidden" name="orderDate" th:field="*{date}"/>
+
         <table class="table receipt-table mb-0">
           <thead>
             <tr>
@@ -251,37 +250,29 @@
           </thead>
 
           <tbody>
-            <!--
-              th:each gives us the iteration status (i) for indexed field names.
-              Spring will bind these to a List<OrderItemDto> on the @ModelAttribute.
-              Each item exposes:
-                item.getProductName()  → display only
-                item.getProductPrice() → display only
-                item.getQuantity()     → pre-filled into the number input
-                item.getSubtotal()     → display only
-            -->
-            <tr th:each="item, i : ${order.getOrderedItems()}">
+            <tr th:each="item, i : *{orderedItems}">
 
-              <!-- Product name: display only + hidden so it travels with the form if needed -->
               <td class="product-name" th:text="${item.getProductName()}">Product Name</td>
 
-              <!-- Unit price: display only -->
+
               <td class="text-right" th:text="${item.getProductPrice()} + '€'">9.99€</td>
 
-              <!-- Quantity: editable number input -->
+
               <td class="text-right">
                 <input type="number"
                        class="qty-input"
                        min="0"
-                       th:name="'items[' + ${i.index} + '].quantity'"
-                       th:value="${item.getQuantity()}"/>
+                       th:field="*{orderedItems[__${i.index}__].quantity}"
+                />
+
+                <input type="hidden" th:field="*{orderedItems[__${i.index}__].product.id}" />
               </td>
 
-              <!-- Subtotal: display only -->
+
               <td class="text-right" th:text="${item.getSubtotal()} + '€'">99.99€</td>
             </tr>
 
-            <!-- Grand total row -->
+
             <tr class="total-row">
               <td colspan="3" class="text-right" th:text="#{order.grand}">Grand Total</td>
               <td class="text-right" th:text="${order.getGrandTotal()} + '€'">127.46€</td>
@@ -289,13 +280,13 @@
           </tbody>
         </table>
 
-        <!-- ─── Status footer ─── -->
+
         <div class="status-footer" sec:authorize="hasRole('ROLE_STAFF')">
 
-          <!-- Row 1: current status badge + new status dropdown side by side -->
+
           <div class="status-row">
 
-            <!-- Current status -->
+
             <div>
               <div class="status-label" th:text="#{order.status}">Current status</div>
               <span class="badge fs-6"
@@ -305,30 +296,29 @@
               </span>
             </div>
 
-            <!-- New status dropdown -->
+
             <div>
-              <div class="status-label" th:text="#{order.newStatus}">New status</div>
-              <select name="newStatus" class="status-select">
-                <option th:each="status : ${statuses}"
+              <div class="status-label" th:text="#{orderEdit.newStatus}">New status</div>
+              <select name="newStatus" class="status-select" th:field="*{shippingStatus}">
+                <option th:each="status : ${T(hr.algebra.jsmalc.online_retial_project.domain.ShippingStatus).values()}"
                         th:value="${status}"
                         th:text="#{${'shipping.status.' + status}}"
-                        th:selected="${status == order.getShippingStatus()}">
+                >
                 </option>
               </select>
             </div>
-
           </div>
 
-          <!-- Row 2: big submit button -->
+
           <div>
             <button type="submit" class="btn-update-order">
               <i class="bi bi-arrow-repeat"></i>
-              <span th:text="#{order.updateOrder}">Update Order</span>
+              <span th:text="#{orderEdit.updateOrder}">Update Order</span>
             </button>
           </div>
 
         </div>
-        <!-- /status-footer -->
+
 
       </form>
 

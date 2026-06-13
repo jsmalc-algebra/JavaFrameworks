@@ -55,8 +55,4 @@ public class Order {
     public String getGrandTotal() {
         return orderedItems.stream().map(OrderItem::getSubtotal).reduce(BigDecimal.ZERO, BigDecimal::add).toString();
     }
-
-    public String getShippingStatus() {
-        return shippingStatus.toString();
-    }
 }

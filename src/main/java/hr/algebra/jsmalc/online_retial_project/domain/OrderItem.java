@@ -26,6 +26,11 @@ public class OrderItem {
         this.quantity = 1;
     }
 
+    public OrderItem(Product product, int quantity) {
+        this.product = product;
+        this.quantity = quantity;
+    }
+
     public BigDecimal getSubtotal() {
         return product.getPrice().multiply(BigDecimal.valueOf(quantity));
     }

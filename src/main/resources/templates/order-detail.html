@@ -228,9 +228,21 @@
           <div class="status-label" th:text="#{order.status}">Shipping status</div>
           <span class="badge fs-6"
                 th:classappend="${order.getShippingStatusClass()}"
-                th:text="#{${'shipping.status.' + order.getShippingStatus()}}">
-            Pending
-          </span>
+                th:text="#{${'shipping.status.' + order.getShippingStatus()}}">Pending</span>
+        </div>
+
+        <div sec:authorize="hasRole('ROLE_STAFF')" style="display:flex; gap:0.5rem;">
+          <a th:href="@{/orders/updateScreen(id=${order.getId()})}"
+             class="btn btn-success">
+            <i class="bi bi-pencil-fill"></i>
+            <span th:text="#{order.edit}">Edit order</span>
+          </a>
+          <form th:action="@{/orders/delete(id=${order.getId()})}" method="post" style="margin:0;">
+            <button type="submit" class="btn btn-danger">
+              <i class="bi bi-trash-fill"></i>
+              <span th:text="#{order.delete}">Delete order</span>
+            </button>
+          </form>
         </div>
       </div>
     </div>
