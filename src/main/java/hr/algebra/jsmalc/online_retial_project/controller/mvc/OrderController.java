@@ -87,5 +87,11 @@ public class OrderController {
         return "redirect:/orders/details?id=" + orderToUpdate.getId();
     }
 
+    @PostMapping("delete")
+    public String deleteOrder(@RequestParam Long id) {
+        orderService.deleteOrder(id);
+        return "redirect:/orders/overview";
+    }
+
 
 }
